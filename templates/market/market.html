@@ -1,0 +1,108 @@
+{% extends 'base_main.html' %}
+
+{% load static %}
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'app/market/market.css' %}">
+{% endblock %}
+
+{% block header %}
+    <header>
+        <div style="margin: auto">闪购</div>
+    </header>
+{% endblock %}
+
+{% block extJS %}
+    <script src="{% static 'app/market/market.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="market">
+        <aside>
+            <ul>
+                {% for foodType in foodTypes %}
+                    <li>
+                        <a href="{% url 'mail:market' foodType.typeid '0' '0' %}">{{ foodType.typename }}</a>
+
+                        {% if foodType.typeid == typeid %}
+                            <span class="yellowSlide"></span>
+                        {% endif %}
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section>
+            {# 左边侧栏商品类型#}
+            <nav>
+                <ul>
+                    <li id="allType">
+                        <span>
+                            全部类型
+                            <span id="allTypeIcon" class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+                    </li>
+                    <li id="sortRule">
+                        <span>
+                            综合排序
+                            <span id="sortRuleIcon" class="glyphicon glyphicon-chevron-down"></span>
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+
+            {# 商品列表#}
+            <menu>
+                <ul>
+                    {% for good in goods %}
+                        <li>
+                            <a href="#">
+                                <img src="{{ good.productimg }}" alt="">
+                                <div class="shoppingInfo">
+                                    <h6>{{ good.productlongname }}</h6>
+                                    <div class="detailTag">
+                                        <span>精选</span>
+                                    </div>
+                                    <div class="unit">{{ good.specifics }}</div>
+                                    <div class="price">
+                                        <span>￥{{ good.price }}</span>
+                                        <s>￥{{ good.marketprice }}</s>
+                                    </div>
+                                </div>
+                            </a>
+                            <section>
+                                <button class="reduce">-</button>
+                                <span class="num">1</span>
+                                <button class="add">+</button>
+                            </section>
+                            <button goodsid={{ good.id }} class="addtocart">加入购物车</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div id="allTypeContainer">
+                    <div>
+{#                    [['全部分类', '0'], ['进口水果', '103534'], ['国产水果', '103533']]#}
+                        {% for childType in childTypesList %}
+                            <a href="{% url 'mail:market' typeid childType.1 '0' %}">
+                                <span>{{ childType.0 }}</span>
+                            </a>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+
+                <div id="sortRuleContainer">
+                    <div>
+                        <a href="{% url 'mail:market' typeid childTypeid '0' %}"><span>综合排序</span></a>
+                        <a href="{% url 'mail:market' typeid childTypeid '1' %}"><span>销量排序</span></a>
+                        <a href="{% url 'mail:market' typeid childTypeid '2' %}"><span>价格降序</span></a>
+                        <a href="{% url 'mail:market' typeid childTypeid '3' %}"><span>价格升序</span></a>
+                    </div>
+                </div>
+            </menu>
+
+        </section>
+    </div>
+{% endblock %}

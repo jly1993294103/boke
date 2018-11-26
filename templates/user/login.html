@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extCSS %}
+<link rel="stylesheet" href="{% static 'app/user/register.css' %}">
+{% endblock %}
+
+{% block extJS %}
+<!--<script src="{% static 'app/user/register.js' %}"></script>-->
+{% endblock %}
+
+{% block header %}
+<header style="font-size:50px;">登陆</header>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="font-size:45px;">
+    <form method="post" enctype="multipart/form-data" action="{% url 'mail:loginHandle' %}" style="margin-top:80px;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>用户名:</label>
+            <input type="text" class="form-control" id="username" name="username"
+                   placeholder="6-18位的数字字母下划线,不能以数字开头" style="height:100px;font-size:35px;">
+        </div>
+        <p id="regMsg"></p>
+        <div class="form-group">
+            <label>密码:</label>
+            <input type="password" class="form-control" id="password" name="password"
+                   placeholder="8位以上字符" style="height:100px;font-size:35px;">
+        </div>
+        <br>
+        <button type="submit" id="register" class="btn btn-success" style="height:90px;font-size:50px;">登陆</button>
+    </form>
+</div>
+{% endblock %}
